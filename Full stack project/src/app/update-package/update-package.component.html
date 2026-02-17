@@ -1,0 +1,70 @@
+<div class="form-container">
+  <h1>Update Package</h1>
+
+  <form (ngSubmit)="updatePackage()">
+    <!-- Package Selection Dropdown -->
+    <div class="form-group">
+      <label for="package_select">Select Package:</label>
+      <select id="package_select" (change)="onPackageSelect($event)">
+        <option value="">Select a package</option>
+        <option *ngFor="let package of packages" [value]="package._id">
+          {{ package.package_title }} ({{ package.package_id }})
+        </option>
+      </select>
+    </div>
+
+    <!-- Only show the form if a package is selected -->
+    <ng-container *ngIf="selectedPackage">
+      <!-- Package Title (read-only) -->
+      <div class="form-group">
+        <label for="package_title">Title:</label>
+        <input
+          type="text"
+          id="package_title"
+          name="package_title"
+          [value]="selectedPackage.package_title"
+          readonly
+        />
+      </div>
+
+      <!-- Package Destination Input -->
+      <div class="form-group">
+        <label for="package_destination">Destination:</label>
+        <input
+          type="text"
+          id="package_destination"
+          name="package_destination"
+          [(ngModel)]="selectedPackage.package_destination"
+        />
+      </div>
+
+      <!-- Package Weight Input -->
+      <div class="form-group">
+        <label for="package_weight">Weight (kg):</label>
+        <input
+          type="number"
+          id="package_weight"
+          name="package_weight"
+          [(ngModel)]="selectedPackage.package_weight"
+          readonly
+        />
+      </div>
+
+      <!-- Is Allocated Toggle -->
+      <div class="form-group">
+        <label for="isAllocated">Is Allocated:</label>
+        <label class="switch">
+          <input
+            type="checkbox"
+            id="isAllocated"
+            name="isAllocated"
+            [(ngModel)]="selectedPackage.isAllocated"
+          />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <button type="submit">Update Package</button>
+    </ng-container>
+  </form>
+</div>

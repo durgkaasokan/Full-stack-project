@@ -1,0 +1,75 @@
+<h1>List of Packages</h1>
+
+<div *ngIf="loading">Loading packages...</div>
+
+<div *ngIf="error" class="error-message">{{ error }}</div>
+
+<div *ngIf="!loading && !error" class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Destination</th>
+        <th>Weight (kg)</th>
+        <th>Allocated</th>
+        <th>Driver ID</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let package of packages">
+        <td>{{ package.package_id }}</td>
+        <td>{{ package.package_title }}</td>
+        <td>{{ package.package_destination }}</td>
+        <td>{{ package.package_weight | weightToGrams }}</td>
+        <td>{{ package.isAllocated ? "Yes" : "No" }}</td>
+        <td>{{ package.driver_id }}</td>
+        <td>
+          <!-- Pass the driver_id and package_title when fetching driver details -->
+          <button
+            class="btn btn-primary"
+            (click)="
+              fetchDriverDetails(package.driver_id, package.package_title)
+            "
+          >
+            View Driver
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Show driver details if selected, with the package name in the title -->
+<div *ngIf="selectedDriver">
+  <h1>Driver Details for {{ selectedPackageTitle }}</h1>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Department</th>
+          <th>Licence</th>
+          <th>Is Active</th>
+          <th>Created At</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ selectedDriver.driver_id }}</td>
+          <td>{{ selectedDriver.driver_name | customUppercase }}</td>
+          <td>{{ selectedDriver.driver_department }}</td>
+          <td>{{ selectedDriver.driver_licence }}</td>
+          <td>{{ selectedDriver.driver_isActive ? "Yes" : "No" }}</td>
+          <td>
+            {{ selectedDriver.driver_createdAt | date : "yyyy-MM-dd HH:mm a" }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<p><a routerLink="/">Go back to Home</a></p>
